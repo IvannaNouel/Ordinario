@@ -8,10 +8,5 @@ before_install:
 - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/+
 - export CHROME_BIN=chromium-browser
 
-
-jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk7
 install:
   - mvn install
