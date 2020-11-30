@@ -32,7 +32,7 @@ script:
 after_success: 
 - mysql -e 'SHOW DATABASES;'
 - mysql -e 'USE DBUnit; SHOW TABLES;'
-- mysql -e 'USE DBUnit; SELECT * FROM Alumnia;'
+- mysql -e 'USE DBUnit; SELECT * FROM Alumnos;'
 
 
 notifications:
