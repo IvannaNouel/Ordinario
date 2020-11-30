@@ -1,5 +1,11 @@
 language: java
 sudo: required
+dist: trusty
+      addons:
+  chrome: stable
+  apt:
+    packages:
+      - chromium-chromedriver
 
 env:
   - ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe ORACLE_SID=XE
@@ -8,9 +14,7 @@ before_install:
   - wget https://raw.githubusercontent.com/Vincit/travis-oracledb-xe/master/accept_the_license_agreement_for_oracledb_xe_11g_and_install.sh
   - bash ./accept_the_license_agreement_for_oracledb_xe_11g_and_install.sh
  - wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.9/
-  - export CHROME_BIN=chromium-browser
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
-  
+# include ChromeDriver in PATH
+  - ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
+  # start Chrome and listen on localhost
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
