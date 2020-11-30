@@ -25,9 +25,9 @@ public Connection getConnection()
 	
 	Connection con = null;
 	try {
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/xe","dbunit","dbunit");
+		Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBUnit"
+					+ "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 	}catch(Exception e) {
 		
 		System.out.println(e);
