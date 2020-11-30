@@ -1,13 +1,39 @@
+sudo: required
 language: java
-jdk: oraclejdk11
-
+jdk: oraclejdk13
+      
 services:
 - xvfb
-addons:
-  apt:
-    sources:
-      - google-chrome
+- mysql
 
-before script:
-  - "export DISPLAY=:99.9"
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install dbus-x11
+  - export DISPLAY=:99.0
   - sleep 3
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - sudo apt-get install -y libappindicator1 fonts-liberation
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg -i google-chrome*.deb
+  - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - sudo cp chromedriver /usr/bin
+  
+  - sudo cp script.sql /usr/bin
+  - mysql < /usr/bin/script.sql
+  
+script: 
+- mvn clean
+- mvn test
+- mvn surefire:test -Dtest=funcionales
+- mvn surefire:test -Dtest=alumnoMock
+- mvn surefire:test -Dtest=DBUnitTestSQL
+
+after_success: 
+- mysql -e 'SHOW DATABASES;'
+- mysql -e 'USE DBUnit; SHOW TABLES;'
+- mysql -e 'USE DBUnit; SELECT * FROM Alumnia;'
+
+
+notifications:
+ email: false
