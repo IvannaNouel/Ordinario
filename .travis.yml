@@ -1,6 +1,10 @@
 sudo: required
+dist: xenial
+addons:
+  chrome: stable
 language: java
-jdk: oraclejdk13
+jdk: openjdk8
+services: mysql
       
 services:
 - xvfb
@@ -18,9 +22,10 @@ before_install:
   - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - sudo cp chromedriver /usr/bin
-  
   - sudo cp script.sql /usr/bin
   - mysql < /usr/bin/script.sql
+  - sudo apt-get update -q
+  - sudo apt-get install gcc-4.8 -y
   
 script: 
 - mvn clean
@@ -33,6 +38,8 @@ after_success:
 - mysql -e 'SHOW DATABASES;'
 - mysql -e 'USE DBUnit; SHOW TABLES;'
 - mysql -e 'USE DBUnit; SELECT * FROM Alumnos;'
+
+
 
 
 notifications:
